@@ -12,9 +12,9 @@
 <section id="home" class="screen"><div class="card"><div class="stat"><div><div class="label">今日趟數</div><div id="todayTrips" class="big">0</div></div><div><div class="label">今日營收</div><div id="todayIncome" class="big">$0</div></div></div></div>
 <div class="card"><h3>今天開始營業</h3><p class="small">請從 HTTPS 網址開啟，第一次使用語音請允許麥克風與語音辨識。</p><button class="primary" onclick="startTrip()">🎙️ 新增一趟</button><button class="light" onclick="showHistory()">📒 歷史紀錄</button></div></section>
 
-<section id="pickup" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>輸入接客地點</h2><button id="pickupVoice" class="voice" onclick="voice('pickup')">🎙️ 說出接客地點</button><input id="pickupInput" placeholder="例如：斗六火車站"><button class="light" onclick="confirmPickup()">確認接客地點</button></div></section>
-<section id="pickupConfirm" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>接客地點確認</h2><div id="pickupText" class="big"></div><button class="green" onclick="navigatePickup()">🗺️ 前往接客</button>
-<button type="button" onclick="groupLandmarkNext()">📍 群組地標</button><button class="light" onclick="backTo('pickup')">重新輸入</button></div></section>
+<section id="pickup" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>輸入接客地點</h2><button id="pickupVoice" class="voice" onclick="voice('pickup')">🎙️ 說出接客地點</button>
+<button type="button" onclick="pickupGroupLandmarkNext()">📍 群組地標</button><input id="pickupInput" placeholder="例如：斗六火車站"><button class="light" onclick="confirmPickup()">確認接客地點</button></div></section>
+<section id="pickupConfirm" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>接客地點確認</h2><div id="pickupText" class="big"></div><button class="green" onclick="navigatePickup()">🗺️ 前往接客</button><button class="light" onclick="backTo('pickup')">重新輸入</button></div></section>
 
 <section id="destination" class="screen hidden"><div class="card"><span class="badge">② 上車後</span><h2>輸入目的地</h2><p class="small">例如：虎尾鎮林森路二段五百號</p><button id="destVoice" class="voice" onclick="voice('destination')">🎙️ 輸入目的地</button><input id="destInput" placeholder="也可以手動輸入"><button class="light" onclick="confirmDestination()">確認目的地</button></div></section>
 <section id="destinationConfirm" class="screen hidden"><div class="card"><span class="badge">② 目的地</span><h2>目的地確認</h2><div id="destText" class="big"></div><p id="destHint" class="small"></p><button class="green" onclick="navigateDestination()">🗺️ 開始導航</button>
@@ -56,6 +56,16 @@ function restoreCurrentTripState() {
 }
 function clearCurrentTripState() {
   try { localStorage.removeItem('yunlinTaxiCurrentTrip'); } catch(e) {}
+}
+
+
+function pickupGroupLandmarkNext() {
+  if (!current) current = {};
+  // 群組地標：跳過接客地點語音辨識與地圖導航，直接進入目的地輸入。
+  current.pickup = current.pickup || "群組地標";
+  current.step = 2;
+  saveCurrentTripState();
+  render();
 }
 
 function groupLandmarkNext() {
