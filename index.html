@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#111827"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="雲林計程車">
-<link rel="manifest" href="manifest.json"><title>雲林計程車營業紀錄 V2</title>
+<link rel="manifest" href="manifest.json"><title>雲林計程車營業紀錄 V2.8</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif}.app{max-width:680px;margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom))}header{padding:20px 4px 12px}h1{font-size:23px;margin:0}h2{font-size:25px;margin:8px 0 14px}.card{background:#fff;border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 2px 10px #00000008}.stat{display:flex;gap:12px}.stat>div{flex:1;background:#f9fafb;border-radius:16px;padding:15px}.big{font-size:30px;font-weight:800}.label,.small{color:#6b7280}.small{font-size:14px;line-height:1.6}button{border:0;border-radius:18px;padding:16px 18px;font-size:19px;font-weight:700;width:100%;margin-top:10px}.primary{background:#111827;color:#fff}.green{background:#047857;color:#fff}.light{background:#eef2f7;color:#111827}.danger{background:#fff1f2;color:#be123c;border:2px solid #fecdd3}.navcard{text-align:center}.navicon{font-size:54px;margin:8px 0}.navtitle{font-size:28px;font-weight:800;margin:6px 0}.danger-wrap{margin-top:18px}.voice{min-height:130px;font-size:25px;background:#111827;color:#fff;border-radius:24px}.voice.listening{background:#b91c1c}input{width:100%;padding:15px;border:1px solid #e5e7eb;border-radius:14px;font-size:18px;margin-top:8px}.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e5e7eb}.amount{font-weight:800}.hidden{display:none!important}.badge{display:inline-block;background:#eef2ff;border-radius:999px;padding:5px 10px;font-size:13px}.history-item{padding:13px 0;border-bottom:1px solid #e5e7eb}
 </style></head><body><div class="app">
-<header><h1>🚕 雲林計程車</h1><div class="small">V2.7｜導航返回確認版</div></header>
+<header><h1>🚕 雲林計程車</h1><div class="small">V2.8｜語音辨識修正版</div></header>
 
 <section id="home" class="screen"><div class="card"><div class="stat"><div><div class="label">今日趟數</div><div id="todayTrips" class="big">0</div></div><div><div class="label">今日營收</div><div id="todayIncome" class="big">$0</div></div></div></div>
 <div class="card"><h3>今天開始營業</h3><p class="small">請從 HTTPS 網址開啟，第一次使用語音請允許麥克風與語音辨識。</p><button class="primary" onclick="startTrip()">🎙️ 新增一趟</button><button class="light" onclick="showHistory()">📒 歷史紀錄</button></div></section>
@@ -44,7 +44,22 @@ function backTo(id){screen(id);saveCurrentTripState()} function startTrip(){curr
 const towns=['斗六市','斗南鎮','虎尾鎮','西螺鎮','土庫鎮','北港鎮','古坑鄉','大埤鄉','莿桐鄉','林內鄉','二崙鄉','崙背鄉','麥寮鄉','東勢鄉','褒忠鄉','臺西鄉','元長鄉','四湖鄉','口湖鄉','水林鄉'];
 function cnNum(s){if(/^\d+$/.test(s))return s;let d={零:0,一:1,二:2,兩:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9},t=0,n=0;for(let c of s){if(d[c]!==undefined)n=d[c];else if(c==='十'){t+=(n||1)*10;n=0}else if(c==='百'){t+=(n||1)*100;n=0}else if(c==='千'){t+=(n||1)*1000;n=0}}return String(t+n)}
 function normalize(s){s=s.trim().replace(/台/g,'臺').replace(/[，,。．]/g,' ').replace(/\s+/g,' ');s=s.replace(/([零一二兩三四五六七八九十百千\d]+)號/g,(_,n)=>cnNum(n)+'號');let t=towns.find(x=>s.includes(x));if(t&&!s.includes('雲林縣'))s='雲林縣'+s;return s}
-function voice(type){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('目前瀏覽器沒有可用的語音辨識。請用最新版 iPhone Safari，並從 HTTPS 網址開啟。');return}let b=document.getElementById(type==='pickup'?'pickupVoice':type==='destination'?'destVoice':'payVoice'),r=new SR();r.lang='zh-TW';r.continuous=false;r.interimResults=true;b.classList.add('listening');b.textContent='🔴 正在聽，請說話…';r.onresult=e=>{let s='';for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;if(type==='pickup')pickupInput.value=s;if(type==='destination')destInput.value=s;if(type==='payment')paymentInput.value=s};r.onerror=e=>{b.classList.remove('listening');b.textContent='🎙️ 再試一次';alert('語音辨識失敗：'+e.error)};r.onend=()=>{b.classList.remove('listening');b.textContent=type==='pickup'?'🎙️ 說出接客地點':type==='destination'?'🎙️ 輸入目的地':'🎙️ 輸入車資與小費'};try{r.start()}catch(e){alert('請再按一次語音按鈕')}}
+let activeRecognition=null;
+function voice(type){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('目前瀏覽器沒有可用的語音辨識。請用最新版 iPhone Safari，並從 HTTPS 網址開啟。');return}
+  if(activeRecognition){try{activeRecognition.abort()}catch(e){} activeRecognition=null}
+  const b=document.getElementById(type==='pickup'?'pickupVoice':type==='destination'?'destVoice':'payVoice');
+  const target=document.getElementById(type==='pickup'?'pickupInput':type==='destination'?'destInput':'paymentInput');
+  const r=new SR(); activeRecognition=r; r.lang='zh-TW'; r.continuous=false; r.interimResults=false; r.maxAlternatives=1;
+  let gotResult=false;
+  b.classList.add('listening'); b.textContent='🔴 正在聽，請說話…';
+  r.onstart=()=>{b.textContent='🔴 請直接說話…'};
+  r.onresult=e=>{let s='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal||e.results[i][0])s+=e.results[i][0].transcript} if(s.trim()){target.value=s.trim();gotResult=true;}};
+  r.onerror=e=>{b.classList.remove('listening');b.textContent='🎙️ 再試一次';activeRecognition=null;const msg={not_allowed:'麥克風權限被拒絕，請到 iPhone「設定 → Safari → 麥克風」允許。',service_not_allowed:'此頁面的語音服務目前不可用，請確認使用 HTTPS Safari。',network:'語音辨識網路連線失敗，請確認網路後再試。',no_speech:'沒有聽到聲音，請靠近麥克風再說一次。',aborted:'語音辨識被中止，請再按一次。'}[e.error]||('語音辨識失敗：'+e.error);alert(msg)};
+  r.onend=()=>{b.classList.remove('listening');b.textContent=type==='pickup'?'🎙️ 說出接客地點':type==='destination'?'🎙️ 輸入目的地':'🎙️ 輸入車資與小費';activeRecognition=null;if(!gotResult){/* allow another tap without extra alert */}};
+  try{r.start()}catch(e){activeRecognition=null;b.classList.remove('listening');b.textContent='🎙️ 再試一次';alert('語音服務尚未準備好，請等 1 秒後再按一次。')}}
+
 function confirmPickup(){let r=document.getElementById('pickupInput').value.trim();if(!r)return alert('請先說出或輸入接客地點');current.pickup=normalize(r);document.getElementById('pickupText').textContent=current.pickup;saveCurrentTripState();screen('pickupConfirm')}
 function confirmDestination(){let r=document.getElementById('destInput').value.trim();if(!r)return alert('請先輸入目的地');current.destination=normalize(r);document.getElementById('destText').textContent=current.destination;document.getElementById('destHint').textContent=current.destination.includes('雲林縣')?'已自動補上雲林縣。':'請確認地名是否正確。';saveCurrentTripState();screen('destinationConfirm')}
 function maps(d,o=''){let u='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(d)+'&travelmode=driving';if(o)u+='&origin='+encodeURIComponent(o);return u}
