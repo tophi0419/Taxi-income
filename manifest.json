@@ -1,8 +1,8 @@
 {
-  "name": "雲林計程車營業紀錄 V2",
+  "name": "雲林計程車營業紀錄 V2.7",
   "short_name": "雲林計程車",
   "lang": "zh-Hant-TW",
-  "start_url": "./",
+  "start_url": "./?v=27",
   "display": "standalone",
   "background_color": "#f3f4f6",
   "theme_color": "#111827",
