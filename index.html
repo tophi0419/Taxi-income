@@ -13,12 +13,12 @@
 <div class="card"><h3>今天開始營業</h3><p class="small">請從 HTTPS 網址開啟，第一次使用語音請允許麥克風與語音辨識。</p><button class="primary" onclick="startTrip()">🎙️ 新增一趟</button><button class="light" onclick="showHistory()">📒 歷史紀錄</button></div></section>
 
 <section id="pickup" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>輸入接客地點</h2><button id="pickupVoice" class="voice" onclick="voice('pickup')">🎙️ 說出接客地點</button>
-<button type="button" onclick="pickupGroupLandmarkNext()">📍 群組地標</button><input id="pickupInput" placeholder="例如：斗六火車站"><button class="light" onclick="confirmPickup()">確認接客地點</button></div></section>
+<button class="light" type="button" onclick="pickupGroupLandmarkNext()">📍 群組地標</button><input id="pickupInput" placeholder="例如：斗六火車站"><button class="light" onclick="confirmPickup()">確認接客地點</button></div></section>
 <section id="pickupConfirm" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>接客地點確認</h2><div id="pickupText" class="big"></div><button class="green" onclick="navigatePickup()">🗺️ 前往接客</button><button class="light" onclick="backTo('pickup')">重新輸入</button></div></section>
 
-<section id="destination" class="screen hidden"><div class="card"><span class="badge">② 上車後</span><h2>輸入目的地</h2><p class="small">例如：虎尾鎮林森路二段五百號</p><button id="destVoice" class="voice" onclick="voice('destination')">🎙️ 輸入目的地</button><input id="destInput" placeholder="也可以手動輸入"><button class="light" onclick="confirmDestination()">確認目的地</button></div></section>
-<section id="destinationConfirm" class="screen hidden"><div class="card"><span class="badge">② 目的地</span><h2>目的地確認</h2><div id="destText" class="big"></div><p id="destHint" class="small"></p><button class="green" onclick="navigateDestination()">🗺️ 開始導航</button>
-<button type="button" onclick="destinationGroupLandmarkNext()">📍 群組地標</button><button class="light" onclick="backTo('destination')">重新輸入</button></div></section>
+<section id="destination" class="screen hidden"><div class="card"><span class="badge">② 上車後</span><h2>輸入目的地</h2><p class="small">例如：虎尾鎮林森路二段五百號</p><button id="destVoice" class="voice" onclick="voice('destination')">🎙️ 輸入目的地</button>
+<button class="light" type="button" onclick="destinationGroupLandmarkNext()">📍 群組地標</button><input id="destInput" placeholder="也可以手動輸入"><button class="light" onclick="confirmDestination()">確認目的地</button></div></section>
+<section id="destinationConfirm" class="screen hidden"><div class="card"><span class="badge">② 目的地</span><h2>目的地確認</h2><div id="destText" class="big"></div><p id="destHint" class="small"></p><button class="green" onclick="navigateDestination()">🗺️ 開始導航</button><button class="light" onclick="backTo('destination')">重新輸入</button></div></section>
 
 <section id="payment" class="screen hidden"><div class="card"><span class="badge">③ 抵達後</span><h2>輸入車資</h2><p class="small">例如：「車資五百，小費五十」。沒有小費時自動記 $0。</p><button id="payVoice" class="voice" onclick="voice('payment')">🎙️ 輸入車資與小費</button><input id="paymentInput" placeholder="例如：車資五百，小費五十"><button class="light" onclick="confirmPayment()">確認金額</button></div></section>
 
@@ -31,7 +31,13 @@ const DB='YunlinTaxiV2',STORE='trips';let db,current={};
 function openDB(){return new Promise((ok,no)=>{let r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id',autoIncrement:true});r.onsuccess=()=>{db=r.result;ok()};r.onerror=()=>no(r.error)})}
 function allTrips(){return new Promise((ok,no)=>{let r=db.transaction(STORE).objectStore(STORE).getAll();r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
 function addTrip(x){return new Promise((ok,no)=>{let r=db.transaction(STORE,'readwrite').objectStore(STORE).add(x);r.onsuccess=ok;r.onerror=()=>no(r.error)})}
-function screen(id){document.querySelectorAll('.screen').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');scrollTo(0,0)}
+function screen(id){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.add('hidden'));
+  const el=document.getElementById(id);
+  if(el) el.classList.remove('hidden');
+  try { localStorage.setItem('yunlinTaxiScreen', id); } catch(e) {}
+  scrollTo(0,0);
+}
 function backTo(id){screen(id)} function startTrip(){current={};screen('pickup')} function showHome(){screen('home');refreshHome()} function showHistory(){screen('history');renderHistory()}
 const towns=['斗六市','斗南鎮','虎尾鎮','西螺鎮','土庫鎮','北港鎮','古坑鄉','大埤鄉','莿桐鄉','林內鄉','二崙鄉','崙背鄉','麥寮鄉','東勢鄉','褒忠鄉','臺西鄉','元長鄉','四湖鄉','口湖鄉','水林鄉'];
 function cnNum(s){if(/^\d+$/.test(s))return s;let d={零:0,一:1,二:2,兩:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9},t=0,n=0;for(let c of s){if(d[c]!==undefined)n=d[c];else if(c==='十'){t+=(n||1)*10;n=0}else if(c==='百'){t+=(n||1)*100;n=0}else if(c==='千'){t+=(n||1)*1000;n=0}}return String(t+n)}
@@ -59,29 +65,10 @@ function clearCurrentTripState() {
 }
 
 
-function pickupGroupLandmarkNext() {
-  if (!current) current = {};
-  // 群組地標：跳過接客地點語音辨識與地圖導航，直接進入目的地輸入。
-  current.pickup = current.pickup || "群組地標";
-  current.step = 2;
-  saveCurrentTripState();
-  render();
-}
+function pickupGroupLandmarkNext(){ current.pickup='群組地標'; screen('destination'); }
 
-function groupLandmarkNext() {
-  if (!current) current = {};
-  current.step = 2;
-  saveCurrentTripState();
-  saveCurrentTripState();
-  render();
-}
-function destinationGroupLandmarkNext() {
-  if (!current) current = {};
-  current.step = 3;
-  saveCurrentTripState();
-  saveCurrentTripState();
-  render();
-}
+function groupLandmarkNext(){ current.pickup='群組地標'; screen('destination'); }
+function destinationGroupLandmarkNext(){ current.destination='群組地標'; screen('payment'); }
 function navigatePickup(){
   saveCurrentTripState();location.href=maps(current.pickup)} function navigateDestination(){
   saveCurrentTripState();location.href=maps(current.destination,current.pickup)}
@@ -94,4 +81,4 @@ async function renderHistory(){let a=(await allTrips()).sort((x,y)=>y.timestamp-
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 openDB().then(refreshHome);
 </script></body></html>
-<script>window.addEventListener("pageshow", function(){ restoreCurrentTripState(); });</script>
+<script>window.addEventListener("pageshow", function(){ try { var id=localStorage.getItem("yunlinTaxiScreen"); if(id && document.getElementById(id)) screen(id); } catch(e) {} });</script>
