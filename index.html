@@ -13,10 +13,12 @@
 <div class="card"><h3>今天開始營業</h3><p class="small">請從 HTTPS 網址開啟，第一次使用語音請允許麥克風與語音辨識。</p><button class="primary" onclick="startTrip()">🎙️ 新增一趟</button><button class="light" onclick="showHistory()">📒 歷史紀錄</button></div></section>
 
 <section id="pickup" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>輸入接客地點</h2><button id="pickupVoice" class="voice" onclick="voice('pickup')">🎙️ 說出接客地點</button><input id="pickupInput" placeholder="例如：斗六火車站"><button class="light" onclick="confirmPickup()">確認接客地點</button></div></section>
-<section id="pickupConfirm" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>接客地點確認</h2><div id="pickupText" class="big"></div><button class="green" onclick="navigatePickup()">🗺️ 前往接客</button><button class="light" onclick="backTo('pickup')">重新輸入</button></div></section>
+<section id="pickupConfirm" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>接客地點確認</h2><div id="pickupText" class="big"></div><button class="green" onclick="navigatePickup()">🗺️ 前往接客</button>
+<button type="button" onclick="groupLandmarkNext()">📍 群組地標</button><button class="light" onclick="backTo('pickup')">重新輸入</button></div></section>
 
 <section id="destination" class="screen hidden"><div class="card"><span class="badge">② 上車後</span><h2>輸入目的地</h2><p class="small">例如：虎尾鎮林森路二段五百號</p><button id="destVoice" class="voice" onclick="voice('destination')">🎙️ 輸入目的地</button><input id="destInput" placeholder="也可以手動輸入"><button class="light" onclick="confirmDestination()">確認目的地</button></div></section>
-<section id="destinationConfirm" class="screen hidden"><div class="card"><span class="badge">② 目的地</span><h2>目的地確認</h2><div id="destText" class="big"></div><p id="destHint" class="small"></p><button class="green" onclick="navigateDestination()">🗺️ 開始導航</button><button class="light" onclick="backTo('destination')">重新輸入</button></div></section>
+<section id="destinationConfirm" class="screen hidden"><div class="card"><span class="badge">② 目的地</span><h2>目的地確認</h2><div id="destText" class="big"></div><p id="destHint" class="small"></p><button class="green" onclick="navigateDestination()">🗺️ 開始導航</button>
+<button type="button" onclick="destinationGroupLandmarkNext()">📍 群組地標</button><button class="light" onclick="backTo('destination')">重新輸入</button></div></section>
 
 <section id="payment" class="screen hidden"><div class="card"><span class="badge">③ 抵達後</span><h2>輸入車資</h2><p class="small">例如：「車資五百，小費五十」。沒有小費時自動記 $0。</p><button id="payVoice" class="voice" onclick="voice('payment')">🎙️ 輸入車資與小費</button><input id="paymentInput" placeholder="例如：車資五百，小費五十"><button class="light" onclick="confirmPayment()">確認金額</button></div></section>
 
@@ -38,7 +40,41 @@ function voice(type){let SR=window.SpeechRecognition||window.webkitSpeechRecogni
 function confirmPickup(){let r=pickupInput.value.trim();if(!r)return alert('請先說出或輸入接客地點');current.pickup=normalize(r);pickupText.textContent=current.pickup;screen('pickupConfirm')}
 function confirmDestination(){let r=destInput.value.trim();if(!r)return alert('請先輸入目的地');current.destination=normalize(r);destText.textContent=current.destination;destHint.textContent=current.destination.includes('雲林縣')?'已自動補上雲林縣。':'請確認地名是否正確。';screen('destinationConfirm')}
 function maps(d,o=''){let u='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(d)+'&travelmode=driving';if(o)u+='&origin='+encodeURIComponent(o);return u}
-function navigatePickup(){location.href=maps(current.pickup)} function navigateDestination(){location.href=maps(current.destination,current.pickup)}
+
+function saveCurrentTripState() {
+  try { localStorage.setItem('yunlinTaxiCurrentTrip', JSON.stringify(current)); } catch(e) {}
+}
+function restoreCurrentTripState() {
+  try {
+    const raw = localStorage.getItem('yunlinTaxiCurrentTrip');
+    if (raw) {
+      const saved = JSON.parse(raw);
+      if (saved && saved.step) { current = saved; render(); return true; }
+    }
+  } catch(e) {}
+  return false;
+}
+function clearCurrentTripState() {
+  try { localStorage.removeItem('yunlinTaxiCurrentTrip'); } catch(e) {}
+}
+
+function groupLandmarkNext() {
+  if (!current) current = {};
+  current.step = 2;
+  saveCurrentTripState();
+  saveCurrentTripState();
+  render();
+}
+function destinationGroupLandmarkNext() {
+  if (!current) current = {};
+  current.step = 3;
+  saveCurrentTripState();
+  saveCurrentTripState();
+  render();
+}
+function navigatePickup(){
+  saveCurrentTripState();location.href=maps(current.pickup)} function navigateDestination(){
+  saveCurrentTripState();location.href=maps(current.destination,current.pickup)}
 function money(n){return '$'+Number(n).toLocaleString('zh-TW')}
 function parseMoney(s){let pat='零一二兩三四五六七八九十百千',f=0,t=0;function get(x){return cnNum(x)}let fm=s.match(new RegExp('車資\\s*([0-9'+pat+']+)')),tm=s.match(new RegExp('小費\\s*([0-9'+pat+']+)'));if(fm)f=+get(fm[1]);if(tm)t=+get(tm[1]);if(!fm){let ns=[...s.matchAll(new RegExp('([0-9'+pat+']+)','g'))].map(x=>+get(x[1])).filter(Boolean);f=ns[0]||0;if(!tm)t=ns[1]||0}return{fare:f,tip:t}}
 function confirmPayment(){let r=paymentInput.value.trim(),p=parseMoney(r);if(!r||!p.fare)return alert('請說例如：「車資五百，小費五十」');current.fare=p.fare;current.tip=p.tip;reviewPickup.textContent=current.pickup;reviewDest.textContent=current.destination;reviewFare.textContent=money(p.fare);reviewTip.textContent=money(p.tip);reviewTotal.textContent=money(p.fare+p.tip);screen('review')}
@@ -48,3 +84,4 @@ async function renderHistory(){let a=(await allTrips()).sort((x,y)=>y.timestamp-
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 openDB().then(refreshHome);
 </script></body></html>
+<script>window.addEventListener("pageshow", function(){ restoreCurrentTripState(); });</script>
