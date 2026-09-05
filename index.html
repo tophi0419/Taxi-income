@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
+<title>雲林計程車營業紀錄 V1</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;background:#f3f4f6;color:#111827}
+.app{max-width:680px;margin:auto;padding:18px 16px 40px}.card{background:white;border-radius:22px;padding:20px;margin:12px 0;box-shadow:0 4px 18px #00000010}
+h1{font-size:25px;margin:4px 0 18px}.stats{display:flex;gap:12px}.stat{flex:1;text-align:center;background:#111827;color:white;border-radius:18px;padding:18px 8px}.stat b{display:block;font-size:28px}.stat span{font-size:13px;opacity:.8}
+button{width:100%;border:0;border-radius:18px;padding:18px 14px;font-size:20px;font-weight:700;margin-top:10px;background:#2563eb;color:white}button.secondary{background:#e5e7eb;color:#111827}button.green{background:#059669}button.orange{background:#ea580c}button.small{font-size:16px;padding:13px}
+.label{font-size:14px;color:#6b7280;margin-bottom:5px}.place{font-size:20px;font-weight:700;padding:14px;background:#f9fafb;border-radius:14px;min-height:52px}.hint{font-size:14px;color:#6b7280;line-height:1.5}
+.screen{display:none}.screen.active{display:block}.step{font-size:14px;font-weight:700;color:#2563eb;margin-bottom:7px}
+.money{display:grid;grid-template-columns:1fr 1fr;gap:12px}.money input{width:100%;font-size:25px;padding:14px;border:2px solid #e5e7eb;border-radius:14px}
+input[type=text]{width:100%;font-size:19px;padding:14px;border:2px solid #e5e7eb;border-radius:14px}
+.row{display:flex;gap:10px}.row>*{flex:1}.total{text-align:center;font-size:30px;font-weight:800;margin:18px 0}.record{padding:14px 0;border-bottom:1px solid #e5e7eb}.record:last-child{border:0}.record .top{display:flex;justify-content:space-between;font-weight:700}.record .route{margin-top:5px;font-size:16px}.record .sub{color:#6b7280;font-size:13px;margin-top:4px}
+.voice{font-size:24px!important;padding:24px!important}.danger{background:#dc2626}
+nav{display:flex;gap:8px;margin-top:16px}nav button{font-size:15px;padding:12px;margin:0;background:#e5e7eb;color:#111827}
+.notice{background:#fff7ed;border-left:5px solid #f97316;padding:12px;border-radius:10px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>🚕 雲林計程車營業紀錄</h1>
+
+<section id="home" class="screen active">
+<div class="stats"><div class="stat"><b id="todayTrips">0</b><span>今日已跑趟</span></div><div class="stat"><b id="todayIncome">$0</b><span>今日總收入</span></div></div>
+<div class="card">
+<button class="voice" onclick="startTrip()">🎙️ 新增一趟</button>
+<p class="hint">流程：🎙️ 接客地點 → 🗺️ 前往接客 → 🎙️ 目的地 → 🗺️ 開始導航 → 🎙️ 車資＋小費 → ✅ 完成本趟</p>
+</div>
+<div class="card"><button class="secondary" onclick="showHistory()">📋 歷史紀錄</button></div>
+</section>
+
+<section id="pickup" class="screen">
+<div class="card"><div class="step">① 接單階段</div><h2>🎙️ 說出客人上車地點</h2>
+<div id="pickupPlace" class="place">尚未輸入</div>
+<button class="voice" onclick="voice('pickup')">🎙️ 語音輸入</button>
+<button class="secondary small" onclick="manual('pickup')">⌨️ 改用文字輸入</button>
+<button onclick="navigatePickup()">🗺️ 前往接客</button>
+<button class="secondary small" onclick="goHome()">取消</button>
+</div></section>
+
+<section id="destination" class="screen">
+<div class="card"><div class="step">② 接到客人後</div><h2>📍 輸入目的地</h2>
+<div id="destPlace" class="place">尚未輸入</div>
+<button class="voice" onclick="voice('destination')">🎙️ 輸入目的地</button>
+<button class="secondary small" onclick="manual('destination')">⌨️ 改用文字輸入</button>
+<div class="notice">會優先整理成「雲林縣＋鄉鎮市＋道路＋號」格式，再交給 Google Maps 搜尋。</div>
+<button onclick="navigateDestination()">🗺️ 開始導航</button>
+<button class="secondary small" onclick="goHome()">取消</button>
+</div></section>
+
+<section id="payment" class="screen">
+<div class="card"><div class="step">③ 抵達目的地</div><h2>🎙️ 輸入收款</h2>
+<button class="voice" onclick="voice('payment')">🎙️ 輸入收款</button>
+<p class="hint">例如：「車資五百，小費五十」；沒有聽到「小費」就預設小費 $0。沒有「記帳」資訊時，記帳欄位預設 $0。</p>
+<div class="money">
+<div><div class="label">💰 車資</div><input id="fare" type="number" min="0" inputmode="numeric" value="0"></div>
+<div><div class="label">🎁 小費</div><input id="tip" type="number" min="0" inputmode="numeric" value="0"></div>
+</div>
+<div class="total">本趟收入 $<span id="total">0</span></div>
+<button class="green" onclick="review()">✅ 確認本趟</button>
+<button class="secondary small" onclick="goHome()">取消</button>
+</div></section>
+
+<section id="review" class="screen">
+<div class="card"><div class="step">④ 最後確認</div><h2>本趟行程</h2>
+<div class="label">📍 起點</div><div id="reviewPickup" class="place"></div>
+<div style="text-align:center;font-size:25px;padding:8px">↓</div>
+<div class="label">📍 終點</div><div id="reviewDest" class="place"></div>
+<div class="money" style="margin-top:15px"><div class="place">💰 車資<br><b id="reviewFare"></b></div><div class="place">🎁 小費<br><b id="reviewTip"></b></div></div>
+<div class="total">💵 本趟收入 $<span id="reviewTotal"></span></div>
+<button class="green" onclick="completeTrip()">✅ 完成本趟</button>
+<button class="secondary small" onclick="show('payment')">返回修改</button>
+</div></section>
+
+<section id="history" class="screen">
+<div class="card"><h2>📋 歷史紀錄</h2><div id="historyList"></div><button class="secondary small" onclick="goHome()">返回首頁</button></div>
+</section>
+</div>
+
+<script>
+let db, trip={pickup:"",destination:"",fare:0,tip:0,pickupTime:null,startedAt:null};
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active')}
+function goHome(){show('home');refreshStats()}
+function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open('YunlinTaxiV1',1);r.onupgradeneeded=()=>r.result.createObjectStore('trips',{keyPath:'id',autoIncrement:true});r.onsuccess=()=>{db=r.result;res()};r.onerror=()=>rej(r.error)})}
+function allTrips(){return new Promise((res,rej)=>{let r=db.transaction('trips').objectStore('trips').getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function refreshStats(){let a=await allTrips(), d=new Date();let y=d.getFullYear(),m=d.getMonth(),day=d.getDate();let t=a.filter(x=>{let z=new Date(x.completedAt);return z.getFullYear()==y&&z.getMonth()==m&&z.getDate()==day});$('todayTrips').textContent=t.length;$('todayIncome').textContent='$'+t.reduce((s,x)=>s+x.fare+x.tip,0).toLocaleString()}
+function startTrip(){trip={pickup:"",destination:"",fare:0,tip:0,pickupTime:new Date().toISOString(),startedAt:new Date().toISOString()};show('pickup');setTimeout(()=>voice('pickup'),250)}
+function normalizeAddress(s){s=s.trim().replace(/台/g,'臺');let towns=['斗六市','斗南鎮','虎尾鎮','西螺鎮','土庫鎮','北港鎮','古坑鄉','大埤鄉','莿桐鄉','林內鄉','二崙鄉','崙背鄉','麥寮鄉','東勢鄉','褒忠鄉','臺西鄉','元長鄉','四湖鄉','口湖鄉','水林鄉'];let t=towns.find(x=>s.includes(x));if(!s.includes('雲林縣')&& !s.includes('雲林')) s='雲林縣'+s;if(t&&!s.includes(t)) s='雲林縣'+t+s.replace('雲林縣','').replace(t,'');s=s.replace(/(\d+)\s*號/g,'$1號');return s}
+function speech(){return window.SpeechRecognition||window.webkitSpeechRecognition}
+function voice(kind){let C=speech();if(!C){alert('此瀏覽器未提供語音辨識，請使用文字輸入。');return}let r=new C();r.lang='zh-TW';r.continuous=false;r.interimResults=false;r.maxAlternatives=1;r.onresult=e=>{let s=e.results[0][0].transcript.trim();if(kind==='pickup'){trip.pickup=normalizeAddress(s);$('pickupPlace').textContent='📍 '+trip.pickup}else if(kind==='destination'){trip.destination=normalizeAddress(s);$('destPlace').textContent='📍 '+trip.destination}else parsePayment(s)};r.onerror=e=>alert('語音辨識失敗，請再說一次或改用文字輸入。');r.start()}
+function manual(kind){let s=prompt(kind==='payment'?'請輸入，例如：車資500，小費50':kind==='pickup'?'請輸入客人上車地點':'請輸入目的地');if(s==null)return;if(kind==='pickup'){trip.pickup=normalizeAddress(s);$('pickupPlace').textContent='📍 '+trip.pickup}else if(kind==='destination'){trip.destination=normalizeAddress(s);$('destPlace').textContent='📍 '+trip.destination}else parsePayment(s)}
+function mapTo(q){if(!q){alert('請先輸入地點');return}location.href='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(q)+'&travelmode=driving'}
+function navigatePickup(){if(!trip.pickup){alert('請先輸入上車地點');return}mapTo(trip.pickup);show('destination')}
+function navigateDestination(){if(!trip.destination){alert('請先輸入目的地');return}mapTo(trip.destination);show('payment')}
+function parsePayment(s){let fare=0,tip=0;let nums=[...s.matchAll(/(\d+(?:\.\d+)?)/g)].map(x=>Number(x[1]));let tm=s.match(/小費|小費金額|tip/i);let fm=s.match(/車資|車錢|車費|費用|收款/);if(tm){let p=s.indexOf(tm[0]), tail=s.slice(p);let n=tail.match(/(\d+(?:\.\d+)?)/);tip=n?Number(n[1]):0;let before=s.slice(0,p);let n2=before.match(/(\d+(?:\.\d+)?)/);fare=n2?Number(n2[1]):(nums.length?nums[0]:0)}else fare=fm&&nums.length?nums[0]:(nums.length?nums[0]:0);trip.fare=fare;trip.tip=tip;$('fare').value=fare;$('tip').value=tip;updateTotal()}
+function updateTotal(){let f=Number($('fare').value||0),t=Number($('tip').value||0);trip.fare=f;trip.tip=t;$('total').textContent=(f+t).toLocaleString()}
+$('fare').addEventListener('input',updateTotal);$('tip').addEventListener('input',updateTotal);
+function review(){updateTotal();$('reviewPickup').textContent=trip.pickup;$('reviewDest').textContent=trip.destination;$('reviewFare').textContent='$'+trip.fare.toLocaleString();$('reviewTip').textContent='$'+trip.tip.toLocaleString();$('reviewTotal').textContent=(trip.fare+trip.tip).toLocaleString();show('review')}
+async function completeTrip(){if(!trip.pickup||!trip.destination){alert('起點與終點不可空白');return}let obj={...trip,completedAt:new Date().toISOString(),total:trip.fare+trip.tip};await new Promise((res,rej)=>{let r=db.transaction('trips','readwrite').objectStore('trips').add(obj);r.onsuccess=res;r.onerror=()=>rej(r.error)});alert('本趟已正式寫入今日帳目');goHome()}
+async function showHistory(){let a=await allTrips();a.sort((x,y)=>new Date(y.completedAt)-new Date(x.completedAt));$('historyList').innerHTML=a.length?a.map(x=>{let d=new Date(x.completedAt);return `<div class="record"><div class="top"><span>${d.toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</span><span>$${x.total.toLocaleString()}</span></div><div class="route">📍 ${escape(x.pickup)} → ${escape(x.destination)}</div><div class="sub">車資 $${x.fare.toLocaleString()}　小費 $${x.tip.toLocaleString()}</div></div>`}).join(''):'目前沒有紀錄';show('history')}
+function escape(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+openDB().then(refreshStats);
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
