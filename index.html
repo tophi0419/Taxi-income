@@ -2,16 +2,18 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#ff6fae"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="計程車記帳">
-<link rel="manifest" href="manifest.json"><title>計程車營業紀錄 V3.0</title>
+<meta name="theme-color" content="#ff6fae" id="themeColor"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="計程車記帳">
+<link rel="manifest" href="manifest.json"><title>計程車營業紀錄 V4.0</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{min-height:100%;margin:0}body{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:#4a2944;background:linear-gradient(145deg,#fff5fb,#f3eaff 55%,#fff8fc);overflow-x:hidden}.app{max-width:680px;margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 15px calc(28px + env(safe-area-inset-bottom));position:relative}.app:before,.app:after{content:"";position:fixed;z-index:-1;opacity:.45;pointer-events:none}.app:before{width:260px;height:260px;left:-110px;top:80px;background:radial-gradient(circle,#ffb5d5 0 28%,transparent 70%)}.app:after{width:300px;height:300px;right:-140px;bottom:60px;background:radial-gradient(circle,#cbb2ff 0 30%,transparent 70%)}header{padding:12px 6px 8px;text-align:center}.brand{font-size:14px;color:#9c6b9b;font-weight:800}.mascot{font-size:29px;letter-spacing:8px;margin:2px 0}h1{font-size:24px;margin:0;color:#6d3f70}h2{font-size:25px;margin:7px 0 14px;color:#57324f}h3{margin:0 0 8px}.card{background:rgba(255,255,255,.92);border:1px solid rgba(255,170,210,.45);border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 8px 25px rgba(121,72,137,.10);backdrop-filter:blur(5px)}.hero{padding:14px}.stat{display:flex;gap:10px}.stat>div{flex:1;background:linear-gradient(145deg,#fff0f7,#f4eaff);border-radius:18px;padding:15px;text-align:center}.big{font-size:29px;font-weight:900;color:#6a3c69}.label,.small{color:#8a7087}.small{font-size:14px;line-height:1.6}.label{font-size:13px;font-weight:700}button{border:0;border-radius:18px;padding:15px 17px;font-size:18px;font-weight:800;width:100%;margin-top:10px;font-family:inherit;box-shadow:0 4px 10px rgba(113,56,105,.08)}button:active{transform:scale(.985)}.primary{background:linear-gradient(135deg,#ff5f9e,#ff8bbb);color:#fff}.secondary{background:linear-gradient(135deg,#b997e8,#c9aff3);color:#fff}.light{background:#fff;color:#7a4e74;border:1px solid #efcfe2}.green{background:linear-gradient(135deg,#c08ee9,#a978db);color:#fff}.danger{background:#fff3f7;color:#d04c79;border:1px solid #f7c1d5}.voice{min-height:126px;font-size:24px;background:linear-gradient(135deg,#ff639e,#ff91bb);color:#fff}.voice.listening{background:linear-gradient(135deg,#d83f70,#f36d98)}.voice .sub{display:block;font-size:13px;font-weight:500;margin-top:6px;opacity:.9}input{width:100%;padding:15px;border:1px solid #e8d5e3;background:#fff;border-radius:15px;font-size:18px;margin-top:8px;color:#4a2944;font-family:inherit}.row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #f0e0ea}.amount{font-weight:900;color:#e64f88}.hidden{display:none!important}.badge{display:inline-block;background:#ffe6f1;color:#c14d7b;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:800}.history-item{padding:13px 0;border-bottom:1px solid #f0e0ea}.place-option{text-align:left;background:#fff;border:2px solid #ead8e6;padding:15px;border-radius:18px;margin-top:10px}.place-option.selected{border-color:#ff75aa;background:#fff4f8}.place-name{font-size:18px;font-weight:900;color:#5c3555}.place-address{font-size:14px;color:#826a7d;margin-top:5px;line-height:1.5}.google-attribution{margin-top:12px;text-align:right;font-size:12px;color:#777}.selected-place{background:#fff3f8;border:2px solid #ff9fc3;border-radius:18px;padding:15px}.errorbox{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:14px;padding:12px;margin-top:12px}.navcard{text-align:center}.navicon{font-size:50px;margin:5px 0}.navtitle{font-size:27px;font-weight:900;color:#633b61}.danger-wrap{margin-top:16px}.footer-mascots{text-align:center;font-size:25px;letter-spacing:7px;margin:12px 0 0;opacity:.9}.section-title{display:flex;justify-content:space-between;align-items:center}.linkbtn{width:auto;margin:0;padding:8px 12px;font-size:14px;background:#ffe7f1;color:#c04f7d;box-shadow:none}.special-list{display:grid;gap:9px}.special-item{display:flex;align-items:center;justify-content:space-between;text-align:left;padding:13px 14px;background:#fff;border:1px solid #ead6e5;border-radius:16px}.special-item b{display:block}.special-item span{display:block;font-size:13px;color:#866f82;margin-top:3px}.pill{font-size:12px;color:#b24876;background:#fff0f6;border-radius:99px;padding:5px 8px}.empty{text-align:center;padding:18px;color:#8d7489}.modal{position:fixed;inset:0;background:rgba(72,35,66,.38);display:flex;align-items:flex-end;z-index:50;padding:12px}.modal-box{width:min(680px,100%);margin:auto;background:#fff9fd;border-radius:26px;padding:18px;max-height:82vh;overflow:auto;box-shadow:0 -5px 35px rgba(0,0,0,.2)}.modal-head{display:flex;justify-content:space-between;align-items:center}.close{width:auto;margin:0;background:#f5e6f1;color:#74466e;padding:9px 13px}.check{font-size:22px}.route-note{background:#f7efff;border-radius:14px;padding:11px;margin-top:10px;font-size:13px;color:#76577d}
-</style></head>
+
+.theme-kuromi body{}.share-row{display:flex;gap:8px;align-items:stretch;margin-top:10px}.share-row input{margin:0;flex:1}.share-row button{width:auto;margin:8px 0 0;padding:12px 14px;font-size:15px}.theme-kuromi{color:#efe6f3!important;background:linear-gradient(145deg,#201a25,#302238 55%,#17131b)!important}.theme-kuromi .card{background:rgba(39,31,46,.95);border-color:rgba(188,137,224,.35);box-shadow:0 8px 25px rgba(0,0,0,.25)}.theme-kuromi h1,.theme-kuromi h2,.theme-kuromi .navtitle,.theme-kuromi .big{color:#f3c6e7}.theme-kuromi input,.theme-kuromi .place-option,.theme-kuromi .special-item{background:#2b2331;color:#f6eaf5;border-color:#5b4563}.theme-kuromi .small,.theme-kuromi .label,.theme-kuromi .place-address{color:#c9b5cb}.theme-kuromi .light{background:#3a2c40;color:#f3c6e7;border-color:#684d72}.theme-kuromi .route-note{background:#33253b;color:#e8d8eb}.theme-kuromi .history-item,.theme-kuromi .row{border-color:#4a394f}.theme-kuromi .linkbtn{background:#3b293b;color:#f2b9d9}
+.theme-melody{}</style></head>
 <body><div class="app">
 <header><div class="mascot">🖤🎀　🌸🎀</div><div class="brand">我的計程車營業紀錄</div><h1>今日營業</h1></header>
 
 <section id="home" class="screen"><div class="card hero"><div class="stat"><div><div class="label">今日趟數</div><div id="todayTrips" class="big">0</div></div><div><div class="label">今日營收</div><div id="todayIncome" class="big">$0</div></div></div><div class="route-note">💗 每一趟都會在最後按下「完成本趟」後才正式記入帳本。</div></div>
-<div class="card"><button class="primary" onclick="startTrip()">🎙️ 新增一趟<span class="small" style="color:#fff;display:block">開始記錄新的行程</span></button><button class="secondary" onclick="showHistory()">📒 查看帳本</button><button class="primary" onclick="showSpecialManager()">📍 特殊地點管理</button></div><div class="footer-mascots">🖤　♡　🌸　♡　🖤</div></section>
+<div class="card"><button class="primary" onclick="startTrip()">🎙️ 新增一趟<span class="small" style="color:#fff;display:block">開始記錄新的行程</span></button><button class="secondary" onclick="showHistory()">📒 查看帳本</button><button class="primary" onclick="showSpecialManager()">📍 特殊地點管理</button><button class="light" onclick="toggleTheme()">🎀 切換主題：<span id="themeName">美樂蒂</span></button></div><div class="footer-mascots">🖤　♡　🌸　♡　🖤</div></section>
 
 <section id="pickup" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>輸入接客地點</h2><button id="pickupVoice" class="voice" onclick="voice('pickup')">🎙️ 說出接客地點<span class="sub">例如：「斗六火車站」</span></button><button class="light" type="button" onclick="openSpecialFor('pickup')">📍 我的特殊地點</button><input id="pickupInput" placeholder="也可以手動輸入"><button class="light" onclick="confirmPickup()">確認並搜尋地址</button><div class="danger-wrap"><button class="danger" onclick="endTrip()">⛔ 結束旅程</button></div></div></section>
 <section id="pickupPlaces" class="screen hidden"><div class="card"><span class="badge">① 接客</span><h2>選擇相似地點</h2><p id="pickupSearchText" class="small"></p><div id="pickupPlacesList"></div><div class="google-attribution">Google Maps / Places</div><button class="light" onclick="backTo('pickup')">重新說一次</button><div class="danger-wrap"><button class="danger" onclick="endTrip()">⛔ 結束旅程</button></div></div></section>
@@ -27,7 +29,9 @@
 <section id="review" class="screen hidden"><div class="card"><span class="badge">④ 最後確認</span><h2>本趟資料</h2><div class="row"><span>接客地點</span><b id="reviewPickup"></b></div><div class="row"><span>目的地</span><b id="reviewDest"></b></div><div class="row"><span>車資</span><b id="reviewFare"></b></div><div class="row"><span>小費</span><b id="reviewTip"></b></div><div class="row"><span>本趟合計</span><b id="reviewTotal" class="amount"></b></div><button class="primary" onclick="completeTrip()">☑️ 完成本趟（記入帳本）</button><button class="light" onclick="backTo('payment')">重新輸入車資</button><div class="danger-wrap"><button class="danger" onclick="endTrip()">⛔ 結束旅程</button></div></div></section>
 <section id="history" class="screen hidden"><div class="card"><div class="section-title"><h2>📒 歷史紀錄</h2><button class="linkbtn" onclick="showHome()">回首頁</button></div><div id="historyList"></div></div></section>
 
-<section id="specialManager" class="screen hidden"><div class="card"><div class="section-title"><div><span class="badge">我的資料庫</span><h2>📍 特殊地點管理</h2></div><button class="linkbtn" onclick="showHome()">完成</button></div><p class="small">把常跑的醫院、車站、公司、社區等存起來。語音辨識後會先比對這裡，找到就直接使用固定地址與座標，不必消耗 Google Places 搜尋額度。</p><button class="primary" onclick="addSpecialPlace()">＋ 新增特殊地點</button><div id="specialList" class="special-list" style="margin-top:12px"></div></div></section>
+<section id="specialManager" class="screen hidden"><div class="card"><div class="section-title"><div><span class="badge">我的資料庫</span><h2>📍 特殊地點管理</h2></div><button class="linkbtn" onclick="showHome()">完成</button></div><p class="small">把常跑的醫院、車站、公司、社區等存起來。語音辨識後會先比對這裡，找到就直接使用固定地址與座標，不必消耗 Google Places 搜尋額度。</p><button class="primary" onclick="addSpecialPlace()">＋ 新增特殊地點</button>
+<div class="route-note">📍 <b>Google Maps 分享</b><br>可從 Google Maps 複製分享連結，貼到下面自動取得座標；若已安裝支援分享目標的 PWA，也可直接分享給本 App。</div>
+<div class="share-row"><input id="specialShareInput" placeholder="貼上 Google Maps 分享連結"><button class="light" onclick="importSharedPlace()">📋 貼上／解析</button></div><div id="specialList" class="special-list" style="margin-top:12px"></div></div></section>
 
 <div id="specialModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h2 id="specialModalTitle">選擇特殊地點</h2><button class="close" onclick="closeSpecialModal()">關閉</button></div><div id="specialModalList" class="special-list"></div></div></div>
 </div>
@@ -41,7 +45,21 @@ function allSpecial(){return new Promise((ok,no)=>{let r=db.transaction(SPECIAL)
 function addSpecial(x){return new Promise((ok,no)=>{let r=db.transaction(SPECIAL,'readwrite').objectStore(SPECIAL).add(x);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
 function updateSpecial(x){return new Promise((ok,no)=>{let r=db.transaction(SPECIAL,'readwrite').objectStore(SPECIAL).put(x);r.onsuccess=ok;r.onerror=()=>no(r.error)})}
 function deleteSpecial(id){return new Promise((ok,no)=>{let r=db.transaction(SPECIAL,'readwrite').objectStore(SPECIAL).delete(id);r.onsuccess=ok;r.onerror=()=>no(r.error)})}
-function screen(id){document.querySelectorAll('.screen').forEach(x=>x.classList.add('hidden'));let el=document.getElementById(id);if(el)el.classList.remove('hidden');try{localStorage.setItem('yunlinTaxiScreen',id)}catch(e){}scrollTo(0,0)}
+const INPUTS_BY_SCREEN={
+ pickup:['pickupInput'], destination:['destInput'], payment:['paymentInput']
+};
+function clearScreenInputs(id){
+  (INPUTS_BY_SCREEN[id]||[]).forEach(k=>{let e=document.getElementById(k);if(e)e.value=''});
+  if(id==='pickup') resetVoiceButton('pickup');
+  if(id==='destination') resetVoiceButton('destination');
+  if(id==='payment') resetVoiceButton('payment');
+}
+function resetVoiceButton(type){
+  const ids={pickup:'pickupVoice',destination:'destVoice',payment:'payVoice'};
+  const texts={pickup:'🎙️ 說出接客地點',destination:'🎙️ 輸入目的地',payment:'🎙️ 輸入車資與小費'};
+  const b=document.getElementById(ids[type]); if(b){b.classList.remove('listening');b.innerHTML=texts[type]+'<span class="sub">'+(type==='pickup'?'例如：「斗六火車站」':type==='destination'?'例如：「虎尾高鐵站」或「林森路二段五百號」':'例如：「車資五百，小費五十」')+'</span>';}
+}
+function screen(id){document.querySelectorAll('.screen').forEach(x=>x.classList.add('hidden'));let el=document.getElementById(id);if(el)el.classList.remove('hidden');clearScreenInputs(id);try{localStorage.setItem('yunlinTaxiScreen',id)}catch(e){}scrollTo(0,0)}
 function backTo(id){screen(id);saveCurrentTripState()}function startTrip(){current={startedAt:Date.now()};saveCurrentTripState();screen('pickup')}function showHome(){screen('home');refreshHome()}function showHistory(){screen('history');renderHistory()}function saveCurrentTripState(){try{localStorage.setItem('yunlinTaxiCurrentTrip',JSON.stringify(current))}catch(e){}}function clearCurrentTripState(){try{localStorage.removeItem('yunlinTaxiCurrentTrip');localStorage.removeItem('yunlinTaxiScreen')}catch(e){}}
 function restoreCurrentTripState(){try{let raw=localStorage.getItem('yunlinTaxiCurrentTrip');if(raw){current=JSON.parse(raw)||{};return true}}catch(e){}return false}
 function endTrip(){if(!confirm('確定要結束這段旅程嗎？\n目前資料將不會記入帳本。'))return;current={};clearCurrentTripState();showHome()}
@@ -50,7 +68,26 @@ function cnNum(s){if(/^\d+$/.test(s))return s;let d={零:0,一:1,二:2,兩:2,三
 function normalize(s){s=s.trim().replace(/台/g,'臺').replace(/[，,。．]/g,' ').replace(/\s+/g,' ');s=s.replace(/([零一二兩三四五六七八九十百千\d]+)號/g,(_,n)=>[...n].every(c=>/\d/.test(c))?n+'號':cnNum(n)+'號');if(!/雲林縣/.test(s)&&towns.some(t=>s.includes(t)))s='雲林縣'+s;return s}
 function money(n){return '$'+Number(n||0).toLocaleString('zh-TW')}
 function parseMoney(s){let pat='零一二兩三四五六七八九十百千',f=0,t=0;let get=x=>cnNum(x);let fm=s.match(new RegExp('車資\\s*([0-9'+pat+']+)')),tm=s.match(new RegExp('小費\\s*([0-9'+pat+']+)'));if(fm)f=+get(fm[1]);if(tm)t=+get(tm[1]);if(!fm){let ns=[...s.matchAll(new RegExp('([0-9'+pat+']+)','g'))].map(x=>+get(x[1])).filter(Boolean);f=ns[0]||0;if(!tm)t=ns[1]||0}return{fare:f,tip:t}}
-function voice(type){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('此 iPhone 瀏覽器不支援語音辨識，請使用 Safari。');return}if(activeRecognition){try{activeRecognition.abort()}catch(e){}activeRecognition=null}let ids={pickup:['pickupVoice','pickupInput'],destination:['destVoice','destInput'],payment:['payVoice','paymentInput']}[type],b=document.getElementById(ids[0]),target=document.getElementById(ids[1]);b.classList.add('listening');b.textContent='🎙️ 正在聆聽…';let r=new SR();activeRecognition=r;r.lang='zh-TW';r.continuous=false;r.interimResults=false;r.maxAlternatives=1;let got=false;r.onresult=e=>{let text=e.results?.[0]?.[0]?.transcript?.trim()||'';if(!text)return;got=true;target.value=text;b.textContent='🎙️ 已辨識：'+text;if(type==='pickup')lookupOrSpecial('pickup',text);else if(type==='destination')lookupOrSpecial('destination',text);else{setTimeout(()=>confirmPayment(),150)}};r.onerror=e=>{b.classList.remove('listening');activeRecognition=null;let m={not_allowed:'請允許 Safari 使用麥克風。',service_not_allowed:'目前無法使用語音服務，請稍後再試。',network:'語音服務網路連線失敗。',no_speech:'沒有聽到聲音，請再按一次。',aborted:'語音辨識已取消。'}[e.error]||('語音辨識失敗：'+e.error);if(e.error!=='aborted')alert(m)};r.onend=()=>{b.classList.remove('listening');activeRecognition=null;if(!got)b.textContent=type==='pickup'?'🎙️ 說出接客地點':type==='destination'?'🎙️ 輸入目的地':'🎙️ 輸入車資與小費'};try{r.start()}catch(e){activeRecognition=null;b.classList.remove('listening');b.textContent='🎙️ 再試一次';alert('語音服務尚未準備好，請等一下再試。')}}
+function voice(type){
+  let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('此瀏覽器不支援語音辨識，請使用支援 Web Speech API 的 Safari/Chrome。');return}
+  if(activeRecognition){try{activeRecognition.abort()}catch(e){}activeRecognition=null}
+  const ids={pickup:['pickupVoice','pickupInput'],destination:['destVoice','destInput'],payment:['payVoice','paymentInput']}[type];
+  const b=document.getElementById(ids[0]),target=document.getElementById(ids[1]);
+  b.classList.add('listening');b.innerHTML='🎙️ 正在聆聽…<span class="sub">說完即可停止</span>';
+  const r=new SR();activeRecognition=r;r.lang='zh-TW';r.continuous=false;r.interimResults=true;r.maxAlternatives=1;
+  let finalText='';
+  r.onresult=e=>{
+    let last=e.results[e.results.length-1]?.[0]?.transcript?.trim()||'';
+    if(e.results[e.results.length-1]?.isFinal) finalText=last;
+    target.value=finalText||last;
+    if(finalText && (type==='pickup'||type==='destination')) lookupOrSpecial(type,finalText);
+    else if(finalText && type==='payment') setTimeout(confirmPayment,80);
+  };
+  r.onerror=e=>{b.classList.remove('listening');activeRecognition=null;if(e.error!=='aborted')alert(({not_allowed:'請允許麥克風權限。',network:'語音服務網路連線失敗。',no_speech:'沒有聽到聲音，請再按一次。'}[e.error]||('語音辨識失敗：'+e.error)))};
+  r.onend=()=>{b.classList.remove('listening');activeRecognition=null;if(!finalText)resetVoiceButton(type)};
+  try{r.start()}catch(e){activeRecognition=null;b.classList.remove('listening');resetVoiceButton(type);alert('語音服務尚未準備好，請再試一次。')}
+}
 function googleReady(){return GOOGLE_PLACES_API_KEY&& !GOOGLE_PLACES_API_KEY.includes('請填入')}
 function token(){try{return crypto.randomUUID()}catch(e){return 't-'+Date.now()+'-'+Math.random().toString(36).slice(2)}}
 function findSpecial(raw){return allSpecial().then(items=>{let q=raw.trim().replace(/台/g,'臺').toLowerCase();let exact=items.filter(x=>[x.name,...(x.aliases||[])].some(a=>String(a).trim().replace(/台/g,'臺').toLowerCase()===q));if(exact.length)return exact[0];let hits=items.map(x=>{let words=[x.name,...(x.aliases||[])].map(a=>String(a).trim().replace(/台/g,'臺').toLowerCase());let score=words.some(a=>a.includes(q)||q.includes(a))?2:0;return{x,score}}).filter(x=>x.score).sort((a,b)=>b.score-a.score);return hits[0]?.x||null})}
@@ -71,14 +108,73 @@ async function openSpecialFor(type){pendingSpecialType=type;document.getElementB
 function closeSpecialModal(){document.getElementById('specialModal').classList.add('hidden')}
 async function showSpecialManager(){screen('specialManager');renderSpecialList()}
 async function renderSpecialList(){let list=document.getElementById('specialList'),items=await allSpecial();if(!items.length){list.innerHTML='<div class="empty">尚未建立特殊地點。</div>';return}list.innerHTML='';items.forEach(sp=>{let d=document.createElement('div');d.className='special-item';d.innerHTML='<span><b>'+esc(sp.name)+'</b><span>'+esc(sp.address)+'</span><span>語音別名：'+esc((sp.aliases||[]).join('、')||'無')+'</span></span><span style="display:flex;gap:6px"><button class="linkbtn" onclick="editSpecial('+sp.id+')">編輯</button><button class="linkbtn" onclick="removeSpecial('+sp.id+')">刪除</button></span>';list.appendChild(d)})}
-async function addSpecialPlace(){let name=prompt('特殊地點名稱，例如：斗六車站');if(!name)return;let address=prompt('完整地址，例如：雲林縣斗六市民生路6號');if(!address)return;let aliases=(prompt('語音別名，用逗號分隔，例如：斗六火車站,斗六車站')||'').split(',').map(x=>x.trim()).filter(Boolean);let lat=parseFloat(prompt('緯度（可留空）')||'');let lng=parseFloat(prompt('經度（可留空）')||'');await addSpecial({name:name.trim(),address:normalize(address),aliases,lat:Number.isFinite(lat)?lat:null,lng:Number.isFinite(lng)?lng:null,createdAt:Date.now()});renderSpecialList()}
+async function addSpecialPlace(prefill={}){
+  let name=prefill.name||prompt('特殊地點名稱，例如：斗六車站');if(!name)return;
+  let address=prefill.address||prompt('完整地址，例如：雲林縣斗六市民生路6號');if(!address)return;
+  let aliases=(prompt('語音別名，用逗號分隔，例如：斗六火車站,斗六車站')||'').split(',').map(x=>x.trim()).filter(Boolean);
+  let lat=Number.isFinite(prefill.lat)?prefill.lat:parseFloat(prompt('緯度（可留空）')||'');
+  let lng=Number.isFinite(prefill.lng)?prefill.lng:parseFloat(prompt('經度（可留空）')||'');
+  await addSpecial({name:name.trim(),address:normalize(address),aliases,lat:Number.isFinite(lat)?lat:null,lng:Number.isFinite(lng)?lng:null,createdAt:Date.now()});
+  renderSpecialList();
+}
+function extractGoogleCoordinates(text){
+  text=String(text||'').trim();
+  let m=text.match(/(?:@|!3d)(-?\d{1,3}\.\d+)[,!](?:-?\d{1,3}\.\d+|4d)(?:[,!](?:.*?))?/);
+  if(m){
+    let parts=text.match(/@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/);
+    if(parts)return {lat:+parts[1],lng:+parts[2]};
+    let p=text.match(/!3d(-?\d{1,3}\.\d+)!4d(-?\d{1,3}\.\d+)/);
+    if(p)return {lat:+p[1],lng:+p[2]};
+  }
+  let q=text.match(/(?:query|destination|daddr)=(-?\d{1,3}\.\d+)[, ](-?\d{1,3}\.\d+)/i);
+  if(q)return {lat:+q[1],lng:+q[2]};
+  let pair=text.match(/(^|[^\d-])(-?\d{1,3}\.\d{4,})\s*[,，]\s*(-?\d{1,3}\.\d{4,})(?!\d)/);
+  if(pair)return {lat:+pair[2],lng:+pair[3]};
+  return null;
+}
+function guessSharedName(text){
+  try{
+    let u=new URL(text);
+    let q=u.searchParams.get('query')||u.searchParams.get('q')||u.searchParams.get('destination');
+    if(q && !/^[-\d.]+,[-\d.]+$/.test(q)) return decodeURIComponent(q.replace(/\+/g,' '));
+  }catch(e){}
+  return '';
+}
+async function importSharedPlace(){
+  const input=document.getElementById('specialShareInput'), text=input.value.trim();
+  if(!text)return alert('請先貼上 Google Maps 分享連結或含座標的文字。');
+  const c=extractGoogleCoordinates(text);
+  if(!c)return alert('找不到座標。請在 Google Maps 使用「分享／複製連結」，再貼上完整內容。');
+  const guessed=guessSharedName(text);
+  const name=prompt('請輸入特殊地點名稱（可直接用語音輸入法）',guessed||'新特殊地點');
+  if(!name)return;
+  const address=prompt('地址（可填 Google Maps 顯示的地址；若沒有可先填地點名稱）',guessed||name);
+  if(!address)return;
+  await addSpecial({name,address,lat:c.lat,lng:c.lng});
+  input.value='';
+  alert('特殊地點已儲存，之後可用名稱／語音關鍵字直接導航。');
+}
 async function editSpecial(id){let items=await allSpecial(),sp=items.find(x=>x.id===id);if(!sp)return;let name=prompt('特殊地點名稱',sp.name);if(!name)return;let address=prompt('完整地址',sp.address);if(!address)return;let aliases=(prompt('語音別名，用逗號分隔', (sp.aliases||[]).join(','))||'').split(',').map(x=>x.trim()).filter(Boolean);sp.name=name.trim();sp.address=normalize(address);sp.aliases=aliases;await updateSpecial(sp);renderSpecialList()}
 async function removeSpecial(id){if(!confirm('確定刪除這個特殊地點？'))return;await deleteSpecial(id);renderSpecialList()}
 function confirmPayment(){let r=document.getElementById('paymentInput').value.trim(),p=parseMoney(r);if(!r||!p.fare)return alert('請說例如：「車資五百，小費五十」');current.fare=p.fare;current.tip=p.tip;document.getElementById('reviewPickup').textContent=current.pickup||'';document.getElementById('reviewDest').textContent=current.destination||'';document.getElementById('reviewFare').textContent=money(p.fare);document.getElementById('reviewTip').textContent=money(p.tip);document.getElementById('reviewTotal').textContent=money(p.fare+p.tip);saveCurrentTripState();screen('review')}
 async function completeTrip(){await addTrip({timestamp:Date.now(),pickup:current.pickup,destination:current.destination,fare:current.fare,tip:current.tip,total:current.fare+current.tip});clearCurrentTripState();current={};alert('本趟已完成並正式記入帳本！');showHome()}
 async function refreshHome(){let a=await allTrips(),d=new Date(),t=a.filter(x=>new Date(x.timestamp).toDateString()===d.toDateString());document.getElementById('todayTrips').textContent=t.length;document.getElementById('todayIncome').textContent=money(t.reduce((s,x)=>s+x.total,0))}
-async function renderHistory(){let a=(await allTrips()).sort((x,y)=>y.timestamp-x.timestamp),list=document.getElementById('historyList');list.innerHTML=a.length?'':'<p class="empty">目前沒有完成的趟次。</p>';a.forEach(x=>{let d=new Date(x.timestamp),tm=d.toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});list.insertAdjacentHTML('beforeend','<div class="history-item"><b>'+esc(tm)+'</b><br>'+esc(x.pickup||'')+' → '+esc(x.destination||'')+'<br><span class="small">車資 '+money(x.fare)+'　小費 '+money(x.tip)+'　合計 <b>'+money(x.total)+'</b></span></div>')})}
+async function renderHistory(){
+  let a=(await allTrips()).sort((x,y)=>y.timestamp-x.timestamp),list=document.getElementById('historyList');
+  if(!a.length){list.innerHTML='<p class="empty">目前沒有完成的趟次。</p>';return}
+  let groups={};
+  a.forEach(x=>{let d=new Date(x.timestamp),key=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();(groups[key]??=[]).push(x)});
+  list.innerHTML='';
+  Object.values(groups).forEach(items=>{
+    let d=new Date(items[0].timestamp),title=(d.getMonth()+1)+'/'+d.getDate()+'('+['日','一','二','三','四','五','六'][d.getDay()]+')';
+    let total=items.reduce((s,x)=>s+(Number(x.fare)||0)+(Number(x.tip)||0),0),fare=items.reduce((s,x)=>s+(Number(x.fare)||0),0),tip=items.reduce((s,x)=>s+(Number(x.tip)||0),0);
+    let html='<div class="history-day"><h3>'+title+'</h3>';
+    items.forEach(x=>{let note=x.note?' '+x.note:'';html+='<div class="history-item">'+esc((x.pickup||'').split('｜')[0])+'-'+esc((x.destination||'').split('｜')[0])+' <span class="amount">'+money(x.fare)+'</span>'+ (x.tip?'<span class="small">＋小費 '+money(x.tip)+'</span>':'') +esc(note)+'</div>'});
+    html+='<div class="history-item"><b>總計 '+money(total)+'</b> <span class="small">（車資 '+money(fare)+'，小費 '+money(tip)+'）</span></div></div>';
+    list.insertAdjacentHTML('beforeend',html);
+  });
+}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-openDB().then(()=>{refreshHome();restoreCurrentTripState();let id=localStorage.getItem('yunlinTaxiScreen');if(id&&document.getElementById(id)){if(current.navStage==='pickup')id='pickupNav';if(current.navStage==='destination')id='destinationNav';screen(id)}});
+openDB().then(()=>{applyTheme(localStorage.getItem('yunlinTaxiTheme')||'melody');refreshHome();restoreCurrentTripState();let id=localStorage.getItem('yunlinTaxiScreen');if(id&&document.getElementById(id)){if(current.navStage==='pickup')id='pickupNav';if(current.navStage==='destination')id='destinationNav';screen(id)}});
 window.addEventListener('pageshow',()=>{restoreCurrentTripState();let id=localStorage.getItem('yunlinTaxiScreen');if(id&&document.getElementById(id)){if(current.navStage==='pickup')id='pickupNav';if(current.navStage==='destination')id='destinationNav';screen(id)}});
 </script></body></html>
